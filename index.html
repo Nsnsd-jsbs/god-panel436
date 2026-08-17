@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRM GOD PANEL ⚡</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
+        body { background-color: #0f172a; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-card { background: #1e293b; padding: 30px; border-radius: 12px; width: 90%; max-width: 360px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); text-align: center; }
+        h2 { color: #22c55e; margin-bottom: 20px; font-size: 22px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: #fff; text-align: center; font-size: 14px; }
+        button { width: 100%; padding: 12px; margin-top: 10px; border: none; border-radius: 8px; background: #22c55e; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #16a34a; }
+        #message { margin-top: 15px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h2>SRM GOD PANEL ⚡</h2>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="نام کاربری" required>
+        <input type="password" id="password" placeholder="رمز عبور" required>
+        <button type="submit">ورود به داشبورد</button>
+    </form>
+    <div id="message"></div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const messageDiv = document.getElementById('message');
+
+    messageDiv.style.color = '#eab308';
+    messageDiv.innerText = 'در حال بررسی...';
+
+    try {
+        const res = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            messageDiv.style.color = '#22c55e';
+            messageDiv.innerText = 'ورود موفقیت‌آمیز بود!';
+        } else {
+            messageDiv.style.color = '#ef4444';
+            messageDiv.innerText = data.message || 'خطا در ورود';
+        }
+    } catch (err) {
+        messageDiv.style.color = '#ef4444';
+        messageDiv.innerText = 'خطا در ارتباط با سرور!';
+    }
+});
+</script>
+
+</body>
+</html>
